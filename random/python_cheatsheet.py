@@ -68,8 +68,8 @@ print(f"{greeting} {number_1}")
 # input enables you to input a variable value
 # dont forget to add a _ at the end
 
-user_name = input("What is your username? ")
-print (f"{greeting} {user_name}")
+#? user_name = input("What is your username? ")
+#? print (f"{greeting} {user_name}")
 
 # ---------------------------
 
@@ -123,10 +123,22 @@ else:
 
 ## boolean logic
 # and/pr operator you can chain condition
+# math first is ()
 
 a=3
 b=4
 
 print (a == 3 and b==4)
+print ((a == 3 or b == 5) and b == 5) # False, calculates () first
 print (True and True)   #True
 print (True and False)  #False
+print (False and False) #False
+
+print (a == 3 or b == 8)
+print (True or False) #True
+print (True or True) #True
+print (False or False) #False
+
+# ---------------------------
+
+## lists
