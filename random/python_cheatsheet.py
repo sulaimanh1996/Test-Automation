@@ -142,3 +142,84 @@ print (False or False) #False
 # ---------------------------
 
 ## lists
+# make a list with []
+# if you add nothing its an empty list, seperate with ,
+# list is unordened 
+# different datatypes in list
+# you can add list in a list
+# count starts with 0
+# += adds to
+# -= removes from
+
+a = [10, 1, 2, 3, 4, 3.56, "Hello", 10]
+b = []
+
+print (a.index(10)) # returns the location of the given value
+print (a.reverse()) # reverses the list
+print (a.pop(1)) # removes the last value from the list of empty, else value given
+print (a.append(99)) # adds value to your list as the last index
+print (a.count(10)) # counts the number of the given values in the list
+b = a.copy()    # copy's the content of the given list
+print (a.clear())   # clears list
+print (a.extend(b)) # extends list with content from another list
+print (a.insert(0,1))   #inserts at location given value
+
+print (a) 
+print (b)
+
+a += [45, 67, 77, "Sulaiman"]   # adds multiple values to list
+
+print (a)
+
+a = [10, 1, 10, 2, 3, 4, 3.56, "Hello", [34,56]]
+print (a[8][1]) #finds value in list within a list (the 8 is where the list is and the one is the first value in that list)\
+
+# ---------------------------
+
+## Tuple
+# make tuple with ()
+# very simalir to list
+# immutable (cant be changed)
+# you can add everything in the tuple
+# when you want set of data that cant be modified
+# can only change if you reassasign whole value
+
+a = (23, 45.56, "Hello", [23, "Het"], (23, 90))
+
+print(a)
+
+# ---------------------------
+
+## Dictonaries
+# looks like list and tuple
+# make dictonary with {}
+# format key value pair
+# you can add list and tuple in this too
+# keys can be string, integer or float
+# value can be anything
+# variable is key here
+
+a = {
+    "name":"Sulaiman", "lastname":"Hashimi", "age":23, "height":177, 
+     "list":[1,2,3], 
+     "tuple":(4,5,6), 
+     "dictonary":{"dictionary1":"input1","dictionary2":"input2"}
+     }
+
+print (a)
+
+my_info = {
+    "Name":"Sulaiman",
+      "Age":29
+      }
+
+print (my_info)
+print (my_info.values()) # only shows values
+print (my_info.pop("Name")) # removes the given value, give the key
+print (my_info)
+print (my_info.get("Age")) # gives the value of the given key
+print (my_info.update({"Height":177})) # adds value to dictonary
+print (my_info.popitem())   #pops the last record of the dictonary, you dont have to add anything
+print 
+
+print (my_info)
