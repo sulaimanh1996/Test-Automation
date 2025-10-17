@@ -353,7 +353,7 @@
 # vehicle1.car_greeting()  #? Call method
 
 # vehicle2 = Vehicle("VW")  #? Uses default values
-# # print(vehicle2.brand)  #? You could also print inside the class itself
+# print(vehicle2.brand)  #? You could also print inside the class itself
 
 #!
 ##! Modules
@@ -361,6 +361,6 @@
 #? module is a python file that can use functions in different files
 #? see python_modules for the attached module
 
-import python_modules   #you import that class from that module
+# import python.python_modules_for_cheatsheet as python_modules_for_cheatsheet   #you import that class from that module
 
-python_modules.vehicle1     #this is how you call that function
+# python_modules_for_cheatsheet.character_1
