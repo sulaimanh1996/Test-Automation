@@ -1,9 +1,12 @@
+# Playwright
+
 mkdir (name) - creates folder
 python -m venv (name) - creates virtual environment
-name\Scripts\activate - activates the virtual environment
+activate - activates the virtual environment
 extra: sometimes you need to activate this in powershell: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser - so you can run scripts
 pip install playwright - installs playwright
 pip install playwright -U - update playwright
 pip install pytest-playwright - test in pytest. testscripts should start with test_ and you run with command pytest
 playwright install - installs all the browsers
 python -m playwright --version - verify install
+type nul > (name.extension) - creating file in cmd 
