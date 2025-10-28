@@ -1,12 +1,46 @@
-# Playwright
+### Playwright 
 
-mkdir (name) - creates folder
-python -m venv (name) - creates virtual environment
-activate - activates the virtual environment
-extra: sometimes you need to activate this in powershell: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser - so you can run scripts
-pip install playwright - installs playwright
-pip install playwright -U - update playwright
-pip install pytest-playwright - test in pytest. testscripts should start with test_ and you run with command pytest
-playwright install - installs all the browsers
-python -m playwright --version - verify install
-type nul > (name.extension) - creating file in cmd 
+## Setup Guide
+
+# ENVIRONMENT SETUP
+mkdir project_name                # Create a new folder
+python -m venv venv_name          # Create a virtual environment
+
+# ACTIVATE VIRTUAL ENVIRONMENT
+# PowerShell:
+.\venv_name\Scripts\Activate.ps1
+
+# CMD:
+venv_name\Scripts\activate
+
+# If activation fails in PowerShell (execution policy issue):
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# INSTALL DEPENDENCIES
+pip install playwright             # Install Playwright
+pip install -U playwright          # Update Playwright
+pip install pytest-playwright      # Add Playwright support for pytest
+
+# INSTALL BROWSERS & VERIFY INSTALLATION
+playwright install                 # Install all browsers (Chromium, Firefox, WebKit)
+python -m playwright --version     # Check Playwright version
+
+# FILE MANAGEMENT
+type nul > first_test.py           # Create a new file in CMD
+
+## difference playwright and playwright with pytest
+# playwright:
+- pip install playwright
+- core playwright api
+- browser automation and api features
+- not pytest features
+
+# playwright with pytest:
+- pip install pytest-playwright
+- adds pytest ingegration (fictures, CLI support)
+- write test using pytest structure
+- ficture like page browser without manually launching the browser
+- command with pytest
+
+# you can install both playwright and playwright pytest, it doesnt conflict
+# 
