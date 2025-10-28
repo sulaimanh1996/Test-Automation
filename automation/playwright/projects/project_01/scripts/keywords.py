@@ -3,7 +3,7 @@ from playwright.sync_api import sync_playwright
 
 username = "standard_user"
 password = "secret_sauce"
-AUTH_FILE = "auth.json"  # file where session state will be stored
+AUTH_FILE = "auth.json"  
 
 
 def click_and_back(page, product_name: str):

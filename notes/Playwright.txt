@@ -20,20 +20,38 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 📦 INSTALL DEPENDENCIES
 -----------------------
-pip install playwright             # Install Playwright
+pip install playwright             # Install Playwright core
 pip install -U playwright          # Update Playwright
-pip install pytest-playwright      # Add Pytest integration for Playwright
+pip install pytest-playwright      # Pytest integration (fixtures, CLI)
 pip install pytest-html            # Optional: Generate HTML reports
+pip install pytest-metadata        # Adds environment info to reports
 
 # Install browsers and verify installation
 playwright install                 # Install Chromium, Firefox, WebKit
+playwright install-deps            # (Linux only) Install system dependencies
 python -m playwright --version     # Check installed version
+
+# Optional tools
+pip install requests               # For API + browser hybrid testing
+pip install python-dotenv          # For environment variables (login credentials)
+pip install faker                  # For fake data generation in tests
 
 
 🗂️ FILE MANAGEMENT
 -------------------
-type nul > first_test.py           # Create new file (CMD)
+type nul > test_sample.py          # Create new file (CMD)
 ni test_sample.py -i file          # Create new file (PowerShell)
+
+# Typical project structure
+project_name/
+│
+├─ venv/                           # Your virtual environment
+├─ pytest.ini                      # Default pytest config (HTML, args)
+├─ scripts/
+│  ├─ __init__.py
+│  ├─ keywords.py                  # Reusable Playwright functions
+│  └─ test_main.py                 # Your actual pytest tests
+└─ report.html                     # Generated after pytest run
 
 
 ───────────────────────────────────────────────
@@ -48,12 +66,12 @@ Playwright:
 
 Pytest-Playwright:
 - Installed via: pip install pytest-playwright
-- Extends Playwright with pytest support (fixtures, CLI options)
-- Enables tests written in pytest format
-- Provides built-in fixtures like "page", "browser", and "context"
-- Run tests using the pytest command
+- Adds built-in fixtures like "page", "browser", "context"
+- Allows simple tests without manually launching browsers
+- Integrates with pytest commands, reports, and parallel execution
+- CLI options: --browser, --headed, --slowmo, --tracing
 
-You can safely install both together (no conflicts)
+✅ You can safely install both together.
 To view details about the installation:
 pip show pytest-playwright
 
@@ -63,9 +81,23 @@ pip show pytest-playwright
 # Test files must start with "test_"
 pytest test_sample.py              # Run a specific test file
 pytest                             # Run all tests in the current folder
+pytest -v                          # Verbose mode
+pytest -s                          # Show print() output in terminal
+pytest -k login                    # Run tests that contain "login" in name
 
-# To automatically generate a test report (pytest-html)
+# Run in headed mode (browser visible)
+pytest --headed --browser=chromium
+
+# Run tests for a specific browser
+pytest --browser=firefox
+pytest --browser=webkit
+
+# Automatically generate an HTML report (pytest-html)
 pytest --html=report.html --self-contained-html
+
+# Run tests in parallel (pytest-xdist)
+pip install pytest-xdist
+pytest -n 4                        # Run 4 tests in parallel
 
 
 💻 BASIC PLAYWRIGHT SCRIPT
@@ -73,55 +105,64 @@ pytest --html=report.html --self-contained-html
 from playwright.sync_api import sync_playwright
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=False)   # Open Chromium browser
-    page = browser.new_page()                     # New tab
-    page.goto("https://example.com")              # Go to URL
-    print(page.title())                           # Print page title
+    browser = p.chromium.launch(headless=False, slow_mo=200)   # Launch browser
+    context = browser.new_context()                            # Create session
+    page = context.new_page()                                  # Open new tab
+
+    page.goto("https://example.com")                           # Go to URL
+    print(page.title())                                        # Print page title
     browser.close()
 
 
 🌐 NAVIGATION
 -------------
-page.goto("https://google.com")                   # Open page
-page.reload()                                     # Refresh page
-page.go_back()                                    # Go back
-page.go_forward()                                 # Go forward
+page.goto("https://google.com")                                # Open page
+page.reload()                                                  # Refresh page
+page.go_back()                                                 # Go back
+page.go_forward()                                              # Go forward
+page.wait_for_url("**/dashboard")                              # Wait for URL change
 
 
 🧭 ELEMENT INTERACTION
 ----------------------
-page.click("text=Login")                          # Click by visible text
-page.click("#submit-button")                      # Click by ID
-page.fill("#username", "my_user")                 # Fill input field
-page.fill("input[name='password']", "secret123")  # Fill by name
-page.press("#username", "Enter")                  # Press keyboard key
-page.check("#agree")                              # Check a checkbox
-page.uncheck("#subscribe")                        # Uncheck checkbox
-page.select_option("#dropdown", "value1")         # Select dropdown
-page.hover("text=Settings")                       # Hover over element
+page.click("text=Login")                                       # Click by text
+page.click("#submit-button")                                   # Click by ID
+page.fill("#username", "my_user")                              # Fill input field
+page.fill("input[name='password']", "secret123")               # Fill by name
+page.press("#username", "Enter")                               # Press keyboard key
+page.check("#agree")                                           # Check checkbox
+page.uncheck("#subscribe")                                     # Uncheck checkbox
+page.select_option("#dropdown", "value1")                      # Select dropdown
+page.hover("text=Settings")                                    # Hover over element
+page.locator(".button").nth(1).click()                         # Click second match
+page.get_by_role("button", name="Login").click()               # Accessible selectors (best practice)
 
 
 ⏱ WAITING
 ----------
-page.wait_for_timeout(2000)                       # Wait 2 seconds
-page.wait_for_selector("#result")                 # Wait for element
+page.wait_for_timeout(2000)                                    # Wait 2 seconds
+page.wait_for_selector("#result")                              # Wait for element
+page.wait_for_load_state("networkidle")                        # Wait until network is quiet
+page.expect_navigation()                                       # Wait for navigation to finish
 
 
-🔍 VALIDATION
--------------
-print(page.title())                               # Print title
-print(page.url)                                   # Print current URL
-assert "Welcome" in page.content()                # Verify text present
+🔍 VALIDATION & ASSERTIONS
+--------------------------
+print(page.title())                                            # Print title
+print(page.url)                                                # Print current URL
+assert "Welcome" in page.content()                             # Verify text present
+assert page.locator("text=Products").is_visible()               # Element visible
+assert "inventory" in page.url                                 # URL check
+expect(page).to_have_title(re.compile(".*Example.*"))           # Using 'expect' syntax
 
 
-📸 SCREENSHOT
--------------
-page.screenshot(path="screenshot.png")            # Take screenshot
-
-
-🚪 CLOSE
---------
-browser.close()                                   # Close browser
+📸 SCREENSHOT & VIDEO
+---------------------
+page.screenshot(path="screenshot.png")                         # Take screenshot
+context.tracing.start(screenshots=True, snapshots=True)        # Start trace
+context.tracing.stop(path="trace.zip")                         # Save trace
+# Playwright CLI command to view trace:
+playwright show-trace trace.zip
 
 
 🧾 CHECK IF PAGE CONTAINS TEXT
@@ -130,3 +171,79 @@ if page.locator("text=Welcome").is_visible():
     print("✅ Text found on page")
 else:
     print("❌ Text not found")
+
+
+💾 SAVING SESSION STATE
+-----------------------
+# Save login session for reuse
+context.storage_state(path="auth.json")
+
+# Reuse saved session
+context = browser.new_context(storage_state="auth.json")
+
+
+🎬 CODEGEN (Record actions as code)
+-----------------------------------
+playwright codegen https://www.saucedemo.com --target python
+# Options:
+# --browser=chromium|firefox|webkit
+# --output login_test.py
+# --slow-mo 300
+
+Example:
+playwright codegen https://www.saucedemo.com --target python --browser=chromium --output scripts/test_login.py
+
+
+🐞 DEBUGGING TIPS
+-----------------
+pytest -s -v                                # Show print output
+pytest --headed --slowmo 300                # Watch each action slowly
+pytest --tracing=on                         # Capture trace for all tests
+pytest --maxfail=1                          # Stop after first failure
+playwright show-trace trace.zip             # Open interactive trace viewer
+page.pause()                                # Pause test and open inspector
+
+
+🧱 COMMON TEST STRUCTURE
+------------------------
+# test_login.py
+from playwright.sync_api import Page, expect
+
+def test_login(page: Page):
+    page.goto("https://www.saucedemo.com/v1/")
+    page.fill("#user-name", "standard_user")
+    page.fill("#password", "secret_sauce")
+    page.click("#login-button")
+    expect(page).to_have_url("https://www.saucedemo.com/v1/inventory.html")
+
+
+🧰 USEFUL CLI COMMANDS
+----------------------
+playwright install                   # Install browsers
+playwright show-trace trace.zip      # View a saved trace
+pytest --headed                      # Run tests in visible browser
+pytest --browser=firefox             # Run in specific browser
+pytest --html=report.html            # Generate test report
+pytest -k login                      # Run only login tests
+
+
+📁 PYTEST.INI (Make settings permanent)
+--------------------------------------
+[pytest]
+addopts = --html=report.html --self-contained-html --browser=chromium --headed -v
+testpaths = scripts
+python_files = test_*.py
+
+
+🚀 BEST PRACTICES
+-----------------
+- Always close browser/context to prevent memory leaks.
+- Use `headless=True` for CI/CD, `headless=False` for debugging.
+- Prefer `get_by_role()` and `get_by_text()` over CSS/XPath selectors.
+- Store credentials in environment variables (.env) or CI secrets.
+- Use fixtures for setup/teardown (pytest-playwright supports this).
+- Save session state after login to skip re-login on every test.
+- Use `--tracing=on` for reproducible bug reports.
+- Separate reusable actions into keyword files or page objects.
+- Keep one `pytest.ini` at project root to standardize settings.
+
