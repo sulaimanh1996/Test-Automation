@@ -1,58 +1,132 @@
-### PLAYWRIGHT
+🎭 PLAYWRIGHT — SETUP & QUICK REFERENCE
+======================================
 
-## SETUP GUIDE
+⚙️ ENVIRONMENT SETUP
+--------------------
+mkdir project_name                 # Create a new project folder
+cd project_name
 
-# ENVIRONMENT SETUP
-mkdir project_name                # Create a new folder
-python -m venv venv_name          # Create a virtual environment
+python -m venv venv_name           # Create a virtual environment
 
-# ACTIVATE VIRTUAL ENVIRONMENT
-# PowerShell:
-.\venv_name\Scripts\Activate.ps1
+# PowerShell
+.\venv_name\Scripts\Activate.ps1   # Activate virtual environment
 
-# CMD:
-venv_name\Scripts\activate
+# CMD
+venv_name\Scripts\activate         # Activate virtual environment
 
-# If activation fails in PowerShell (execution policy issue):
+# If activation fails in PowerShell (execution policy issue)
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-# INSTALL DEPENDENCIES
+
+📦 INSTALL DEPENDENCIES
+-----------------------
 pip install playwright             # Install Playwright
 pip install -U playwright          # Update Playwright
-pip install pytest-playwright      # Add Playwright integration for Pytest
+pip install pytest-playwright      # Add Pytest integration for Playwright
+pip install pytest-html            # Optional: Generate HTML reports
 
-# INSTALL BROWSERS & VERIFY INSTALLATION
-playwright install                 # Install all browsers (Chromium, Firefox, WebKit)
-python -m playwright --version     # Check installed Playwright version
+# Install browsers and verify installation
+playwright install                 # Install Chromium, Firefox, WebKit
+python -m playwright --version     # Check installed version
 
-# FILE MANAGEMENT
-type nul > first_test.py           # Create a new file in CMD
-ni test_sample.py -i file          # Create a new file in PowerShell
 
-------------------------------------------------------------
+🗂️ FILE MANAGEMENT
+-------------------
+type nul > first_test.py           # Create new file (CMD)
+ni test_sample.py -i file          # Create new file (PowerShell)
 
-## DIFFERENCE: Playwright vs. Pytest-Playwright
 
-# Playwright:
+───────────────────────────────────────────────
+DIFFERENCE: PLAYWRIGHT vs PYTEST-PLAYWRIGHT
+───────────────────────────────────────────────
+
+Playwright:
 - Installed via: pip install playwright
 - Provides the core Playwright API
 - Used for browser automation and API testing
 - Does NOT include pytest integration
 
-# Pytest-Playwright:
+Pytest-Playwright:
 - Installed via: pip install pytest-playwright
-- Extends Playwright with pytest features (fixtures, CLI support)
-- Allows writing tests using pytest structure
-- Provides built-in fixtures like "page" and "browser" (no manual launch needed)
-- Tests are executed with the pytest command
+- Extends Playwright with pytest support (fixtures, CLI options)
+- Enables tests written in pytest format
+- Provides built-in fixtures like "page", "browser", and "context"
+- Run tests using the pytest command
 
-# You can safely install both together (no conflicts)
-# To view details about the installation:
+You can safely install both together (no conflicts)
+To view details about the installation:
 pip show pytest-playwright
 
-------------------------------------------------------------
 
-## RUNNING TESTS WITH PYTEST
-# Test file names must start with "test_"
+✅ RUNNING TESTS WITH PYTEST
+----------------------------
+# Test files must start with "test_"
 pytest test_sample.py              # Run a specific test file
-pytest                             # Run all tests in the current directory
+pytest                             # Run all tests in the current folder
+
+# To automatically generate a test report (pytest-html)
+pytest --html=report.html --self-contained-html
+
+
+💻 BASIC PLAYWRIGHT SCRIPT
+--------------------------
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)   # Open Chromium browser
+    page = browser.new_page()                     # New tab
+    page.goto("https://example.com")              # Go to URL
+    print(page.title())                           # Print page title
+    browser.close()
+
+
+🌐 NAVIGATION
+-------------
+page.goto("https://google.com")                   # Open page
+page.reload()                                     # Refresh page
+page.go_back()                                    # Go back
+page.go_forward()                                 # Go forward
+
+
+🧭 ELEMENT INTERACTION
+----------------------
+page.click("text=Login")                          # Click by visible text
+page.click("#submit-button")                      # Click by ID
+page.fill("#username", "my_user")                 # Fill input field
+page.fill("input[name='password']", "secret123")  # Fill by name
+page.press("#username", "Enter")                  # Press keyboard key
+page.check("#agree")                              # Check a checkbox
+page.uncheck("#subscribe")                        # Uncheck checkbox
+page.select_option("#dropdown", "value1")         # Select dropdown
+page.hover("text=Settings")                       # Hover over element
+
+
+⏱ WAITING
+----------
+page.wait_for_timeout(2000)                       # Wait 2 seconds
+page.wait_for_selector("#result")                 # Wait for element
+
+
+🔍 VALIDATION
+-------------
+print(page.title())                               # Print title
+print(page.url)                                   # Print current URL
+assert "Welcome" in page.content()                # Verify text present
+
+
+📸 SCREENSHOT
+-------------
+page.screenshot(path="screenshot.png")            # Take screenshot
+
+
+🚪 CLOSE
+--------
+browser.close()                                   # Close browser
+
+
+🧾 CHECK IF PAGE CONTAINS TEXT
+------------------------------
+if page.locator("text=Welcome").is_visible():
+    print("✅ Text found on page")
+else:
+    print("❌ Text not found")
