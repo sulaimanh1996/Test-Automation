@@ -126,6 +126,7 @@ page.wait_for_url("**/dashboard")                              # Wait for URL ch
 🧭 ELEMENT INTERACTION
 ----------------------
 page.click("text=Login")                                       # Click by text
+page.click("a[href='./cart.html']")                            # Click with only link
 page.click("#submit-button")                                   # Click by ID
 page.fill("#username", "my_user")                              # Fill input field
 page.fill("input[name='password']", "secret123")               # Fill by name
