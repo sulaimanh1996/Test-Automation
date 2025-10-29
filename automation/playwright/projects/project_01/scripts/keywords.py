@@ -1,82 +1,70 @@
-import re
+## Keywords
+# ? *** Settings ***
+import random
+import os
 from playwright.sync_api import sync_playwright
 
-username = "standard_user"
-password = "secret_sauce"
-AUTH_FILE = "auth.json"  
+
+# ? *** Variables ***
+PAGE_LINK_LOGIN=("https://www.saucedemo.com/v1/")
+PAGE_LINK_PRODUCT_PAGE=("https://www.saucedemo.com/v1/inventory.html")
+CORRECT_USER_NAME=["standard_user", "locked_out_user", "problem_user", "performance_glitch_user"]
+CORRECT_PASSWORD=("secret_sauce")
+INCORRECT_USER_NAME=("test")
+INCORRECT_PASSWORD=("test")
+
+# ? *** Functions ***
 
 
-def click_and_back(page, product_name: str):
-    page.get_by_role("link", name=product_name).click()
-    page.get_by_role("button", name="<- Back").click()
-
-
-def log_in():
+# ? *** Keywords ***
+def LOG_IN():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, slow_mo=200)
+        # * setup
+        browser = p.chromium.launch(headless=False,slow_mo=500)
         context = browser.new_context()
         page = context.new_page()
+        page.goto(PAGE_LINK_LOGIN)
 
-        page.goto("https://www.saucedemo.com/v1/")
+        # * error no username (and password)
+        page.fill("[id='password']", (INCORRECT_PASSWORD)) 
+        page.click("[id='login-button']") 
+        assert "Epic sadface: Username is required" in page.content()
+        page.screenshot(path=os.path.join(os.path.dirname(os.path.dirname(__file__)), "screenshots", "screenshots.png"))   
 
-        page.click("[id='login-button']")
-        assert page.locator("text=Epic sadface: Username is required").is_visible()
+        # * error no password
+        page.fill("[id='password']", ("")) 
+        page.fill("[id='user-name']", (INCORRECT_USER_NAME)) 
+        page.click("[id='login-button']") 
+        assert "Epic sadface: Password is required" in page.content()
+        page.screenshot(path=os.path.join(os.path.dirname(os.path.dirname(__file__)), "screenshots", "screenshots.png"))   
 
-        page.fill("input[id='user-name']", "test")
-        page.click("[id='login-button']")
-        assert page.locator("text=Epic sadface: Password is required").is_visible()
+        # * error username and password
+        page.fill("[id='user-name']", (INCORRECT_USER_NAME)) 
+        page.fill("[id='password']", (INCORRECT_PASSWORD)) 
+        page.click("[id='login-button']") 
+        assert "Epic sadface: Username and password do not match any user in this service" in page.content()
+        page.screenshot(path=os.path.join(os.path.dirname(os.path.dirname(__file__)), "screenshots", "screenshots.png"))   
 
-        page.fill("input[id='password']", "test")
-        page.click("[id='login-button']")
-        assert page.locator(
-            "text=Epic sadface: Username and password do not match any user in this service"
-        ).is_visible()
+        # * correct username and password
+        page.fill("[id='user-name']", random.choice(CORRECT_USER_NAME)) 
+        page.fill("[id='password']", (CORRECT_PASSWORD)) 
+        page.click("[id='login-button']") 
+        page.screenshot(path=os.path.join(os.path.dirname(os.path.dirname(__file__)), "screenshots", "screenshots.png"))   
 
-        page.fill("input[id='user-name']", username)
-        page.fill("input[id='password']", password)
-        page.click("[id='login-button']")
+        # * save state
+        context.storage_state(path="auth.json")
 
-        context.storage_state(path=AUTH_FILE)
+        # * teardown
+        page.close    
 
-        context.close()
-        browser.close()
-
-
-def products():
+def PRODUCT_PAGE():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, slow_mo=200)
-
-        context = browser.new_context(storage_state=AUTH_FILE)
+        # * setup with saved state
+        browser = p.chromium.launch(headless=False,slow_mo=500)
+        context = browser.new_context(storage_state="auth.json")
         page = context.new_page()
+        page.goto(PAGE_LINK_PRODUCT_PAGE)
 
-        page.goto("https://www.saucedemo.com/v1/inventory.html")
-        click_and_back(page, "Sauce Labs Backpack")
-        click_and_back(page, "Sauce Labs Bolt T-Shirt")
-        click_and_back(page, "Sauce Labs Onesie")
-        click_and_back(page, "Sauce Labs Bike Light")
-        click_and_back(page, "Sauce Labs Fleece Jacket")
-        click_and_back(page, "Test.allTheThings() T-Shirt (")
-
-        page.locator("div").filter(
-            has_text=re.compile(r"^\$29\.99ADD TO CART$")
-        ).get_by_role("button").click()
-        page.get_by_role("button", name="REMOVE").click()
-        page.locator("div:nth-child(3) > .pricebar > .btn_primary").click()
-        page.get_by_role("button", name="REMOVE").click()
-        page.locator("div").filter(
-            has_text=re.compile(r"^\$7\.99ADD TO CART$")
-        ).get_by_role("button").click()
-        page.get_by_role("button", name="REMOVE").click()
-        page.locator("div").filter(
-            has_text=re.compile(r"^\$9\.99ADD TO CART$")
-        ).get_by_role("button").click()
-        page.get_by_role("button", name="REMOVE").click()
-        page.locator("div").filter(
-            has_text=re.compile(r"^\$49\.99ADD TO CART$")
-        ).get_by_role("button").click()
-        page.get_by_role("button", name="REMOVE").click()
-        page.locator("div:nth-child(6) > .pricebar > .btn_primary").click()
-        page.get_by_role("button", name="REMOVE").click()
-
-        context.close()
-        browser.close()
+        # * add to cart main product page
+        
+    

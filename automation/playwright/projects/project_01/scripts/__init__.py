@@ -1,3 +1,4 @@
+# this file gets added to a folder to make that folder into a library
 # saucelogin/__init__.py
-from scripts.keywords import log_in
-from scripts.keywords import products
+from scripts.keywords import LOG_IN
+from scripts.keywords import PRODUCT_PAGE

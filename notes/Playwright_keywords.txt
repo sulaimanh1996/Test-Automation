@@ -1,0 +1,23 @@
+# Playwright_keywords
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=,slow_mo=)
+    context = browser.new_context()
+    page = content.new_page()
+    page.goto("")
+
+    page.locator("div").filter(
+        has_text=re.compile(r"LOGIN")
+    ).get_by_role("button").click()
+
+    assert page.locator("text=").is_visible()
+
+    page.fill("input[id='']", "")
+ 
+    context.close()
+    browser.close()
+
+
+
+
+
+
