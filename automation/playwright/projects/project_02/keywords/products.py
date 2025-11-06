@@ -24,17 +24,23 @@ class products_class():
         self.page.locator("[data-test=\"remove-sauce-labs-onesie\"]").click()
         self.page.locator("[data-test=\"remove-test.allthethings()-t-shirt-(red)\"]").click()
 
-    def view_products(self):
+    def view_products_and_remove_from_cart_from_product_page(self):
         self.page.locator("a[id='item_0_title_link']").click()
+        self.page.locator('id=remove')
         self.page.locator("button").filter(has_text="Back to products").click()
         self.page.locator("a[id='item_1_title_link']").click()
+        self.page.locator('id=remove')
         self.page.locator("button").filter(has_text="Back to products").click()
         self.page.locator("a[id='item_2_title_link']").click()
+        self.page.locator('id=remove')
         self.page.locator("button").filter(has_text="Back to products").click()
         self.page.locator("a[id='item_3_title_link']").click()
+        self.page.locator('id=remove')
         self.page.locator("button").filter(has_text="Back to products").click()
         self.page.locator("a[id='item_4_title_link']").click()
+        self.page.locator('id=remove')
         self.page.locator("button").filter(has_text="Back to products").click()
         self.page.locator("a[id='item_5_title_link']").click()
+        self.page.locator('id=remove')
         self.page.locator("button").filter(has_text="Back to products").click()
-        
+
