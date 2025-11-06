@@ -175,17 +175,3 @@ def CHECKOUT():
         page = context.new_page()
         page.goto(PAGE_LINK_PRODUCT_PAGE)
 
-        # * add to cart main product page
-        page.click("xpath=//*[@id='inventory_container']/div/div[1]/div[3]/button")
-        page.click("xpath=//*[@id='inventory_container']/div/div[2]/div[3]/button")
-        page.click("xpath=//*[@id='inventory_container']/div/div[3]/div[3]/button")
-        page.click("xpath=//*[@id='inventory_container']/div/div[4]/div[3]/button")
-        page.click("xpath=//*[@id='inventory_container']/div/div[5]/div[3]/button")
-        page.click("xpath=//*[@id='inventory_container']/div/div[6]/div[3]/button")
-
-        # * go to cart
-        page.click("a[href='./cart.html']")
-
-        # * checkout
-        page.click("text=CHECKOUT")                                     
-
