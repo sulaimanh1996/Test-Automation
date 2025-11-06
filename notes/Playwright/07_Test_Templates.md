@@ -1,52 +1,159 @@
 # 🧪 TEST FILE TEMPLATES
-Copy-paste test structures based on PROJECT_02
+Copy-paste test structures based on PROJECT_02 with improved patterns
 
-## 🎯 **MAIN TEST TEMPLATE**
+## 🎯 **MAIN TEST TEMPLATE (IMPROVED)**
 
 ### **File: `test_cases/test_main.py`**
 ```python
 # ════════════════════════ SETTINGS ════════════════════════
-from keywords import log_in_class, hamburger_menu_class, products_class
+from keywords import log_in_class
+from keywords import hamgurger_menu_class
+from keywords import products_class
+from keywords import setup_class
 from playwright.sync_api import sync_playwright
 
 # ════════════════════════ VARIABLES ════════════════════════
-PAGE_LINK_LOGIN = "(FILL_YOUR_APP_URL_HERE)"
-# Example: PAGE_LINK_LOGIN = "https://www.saucedemo.com"
+PAGE_URL = "https://www.saucedemo.com"  # Replace with your app URL
+BROWSER_WIDTH = 1920
+BROWSER_HEIGHT = 1080
 
 # ════════════════════════ TESTCASE ════════════════════════
 def test_user_experience():
-    """Complete user journey test - login, navigation, products, logout"""
+    """Complete user journey test - improved class-based setup"""
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, slow_mo=100)
-        context = browser.new_context()
-        page = context.new_page()
-        page.goto(PAGE_LINK_LOGIN)
+        # Class-based browser setup (consistent with other handlers)
+        setup_handler = setup_class(p)
+        browser, page = setup_handler.setup_browser()
 
-        # Initialize keyword classes
+        # Initialize all keyword classes
         login_handler = log_in_class(page)
-        hamburger_handler = hamburger_menu_class(page)
+        hamburger_handler = hamgurger_menu_class(page)
         product_handler = products_class(page)
 
-        # Test login scenarios
-        login_handler.incorrect_password()
-        login_handler.incorrect_username()
-        login_handler.incorrect_password_and_username()
-        login_handler.correct_password_and_username()
+        try:
+            # Test login scenarios
+            login_handler.incorrect_password()
+            login_handler.incorrect_username()
+            login_handler.incorrect_password_and_username()
+            login_handler.correct_password_and_username()
 
-        # Test navigation
-        hamburger_handler.about()
-        page.go_back()
-        hamburger_handler.log_out()
-        
-        # Login again for product testing
-        login_handler.correct_password_and_username()
-        hamburger_handler.all_items()
+            # Test navigation
+            hamburger_handler.about()
+            page.go_back()
+            hamburger_handler.log_out()
+            
+            # Login again for product testing
+            login_handler.correct_password_and_username()
+            hamburger_handler.all_items()
 
-        # Test product functionality
-        product_handler.add_to_cart_main_page()
+            # Test product functionality
+            product_handler.add_to_cart_main_page()
+            product_handler.remove_from_cart_main_page()
+            product_handler.view_products()
+            
+        finally:
+            # Always cleanup browser
+            browser.close()
+
+def test_login_only():
+    """Focused test - login scenarios only"""
+    with sync_playwright() as p:
+        setup_handler = setup_class(p)
+        browser, page = setup_handler.setup_browser()
         
-        # Clean up
+        login_handler = log_in_class(page)
+        
+        try:
+            login_handler.correct_password_and_username()
+            # Add assertions here
+            assert "inventory" in page.url
+            
+        finally:
+            browser.close()
+
+def test_products_only():
+    """Focused test - product functionality only"""
+    with sync_playwright() as p:
+        setup_handler = setup_class(p)
+        browser, page = setup_handler.setup_browser()
+        
+        login_handler = log_in_class(page)
+        product_handler = products_class(page)
+        
+        try:
+            # Quick login
+            login_handler.correct_password_and_username()
+            
+            # Test products
+            product_handler.add_to_cart_main_page()
+            product_handler.view_products()
+            
+        finally:
+            browser.close()
+```
+
+---
+
+## 🔧 **SETUP PATTERNS**
+
+### **🎯 Basic Setup (Standard)**
+```python
+def test_example():
+    with sync_playwright() as p:
+        setup_handler = setup_class(p)
+        browser, page = setup_handler.setup_browser()
+        
+        # Your test code here
+        
         browser.close()
+```
+
+### **🎯 Headless Setup (CI/CD)**
+```python
+def test_headless():
+    with sync_playwright() as p:
+        setup_handler = setup_class(p)
+        browser, page = setup_handler.setup_browser_headless()
+        
+        # Your test code here
+        
+        browser.close()
+```
+
+### **🎯 Mobile Setup (Responsive Testing)**
+```python
+def test_mobile():
+    with sync_playwright() as p:
+        setup_handler = setup_class(p)
+        browser, page = setup_handler.setup_mobile_browser()
+        
+        # Your test code here
+        
+        browser.close()
+```
+
+### **🎯 Multiple Handlers Pattern**
+```python
+def test_full_workflow():
+    with sync_playwright() as p:
+        # Setup
+        setup_handler = setup_class(p)
+        browser, page = setup_handler.setup_browser()
+        
+        # Initialize all handlers
+        login_handler = log_in_class(page)
+        nav_handler = hamgurger_menu_class(page)
+        product_handler = products_class(page)
+        
+        try:
+            # Use handlers
+            login_handler.correct_password_and_username()
+            nav_handler.all_items()
+            product_handler.add_to_cart_main_page()
+            
+        finally:
+            browser.close()
+```
 
 def test_login_only():
     """Focused test for login functionality only"""

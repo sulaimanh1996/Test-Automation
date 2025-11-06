@@ -1,5 +1,5 @@
 # 🎭 PLAYWRIGHT AUTOMATION - COMPLETE GUIDE INDEX
-Based on PROJECT_02 real-world implementation
+Based on PROJECT_02 real-world implementation with improved setup patterns
 
 ## 📚 **GUIDE STRUCTURE**
 
@@ -8,11 +8,15 @@ Based on PROJECT_02 real-world implementation
 2. **[02_Package_Installation.md](02_Package_Installation.md)** - All required packages & installation
 3. **[03_Project_Structure.md](03_Project_Structure.md)** - Folder organization & file structure
 
-### **🔧 Implementation**
+### **🔧 Implementation** 
 4. **[04_Element_Selectors.md](04_Element_Selectors.md)** - All selector types & interaction methods
 5. **[05_Reporter_Setup.md](05_Reporter_Setup.md)** - HTML reports & Allure configuration
-6. **[06_Keyword_Templates.md](06_Keyword_Templates.md)** - Copy-paste class templates
-7. **[07_Test_Templates.md](07_Test_Templates.md)** - Test file structures & patterns
+6. **[06_Keyword_Templates.md](06_Keyword_Templates.md)** - Copy-paste class templates **[UPDATED]**
+7. **[07_Test_Templates.md](07_Test_Templates.md)** - Test file structures & patterns **[UPDATED]**
+
+### **🚀 Advanced References**
+8. **[08_Element_Selectors_Complete.md](08_Element_Selectors_Complete.md)** - Complete selector reference **[NEW]**
+9. **[09_Improvements_Guide.md](09_Improvements_Guide.md)** - Before/After patterns & evolution **[NEW]**
 
 ---
 
@@ -22,19 +26,33 @@ Based on PROJECT_02 real-world implementation
 ```
 1. Follow 01_Project_Setup.md     → Create project structure
 2. Follow 02_Package_Installation → Install all dependencies  
-3. Copy from 06_Keyword_Templates → Create your keyword classes
+3. Copy from 06_Keyword_Templates → Create setup + keyword classes
 4. Copy from 07_Test_Templates    → Create your test files
 5. Follow 05_Reporter_Setup      → Configure reporting
-6. Use 04_Element_Selectors      → Reference for interactions
+6. Use 08_Element_Selectors_Complete → Reference for all interactions
+7. Use 09_Improvements_Guide → Understand pattern evolution
 ```
 
 ### **For Existing Projects:**
 ```
-- Use 04_Element_Selectors as reference for interactions
-- Use 06_Keyword_Templates to add new functionality
-- Use 07_Test_Templates to add new test scenarios
+- Use 08_Element_Selectors_Complete as complete reference
+- Use 06_Keyword_Templates to add new functionality (including setup class)
+- Use 07_Test_Templates to add new test scenarios (improved patterns)
 - Use 05_Reporter_Setup to improve reporting
 ```
+
+## ⭐ **NEW IMPROVEMENTS (Latest Update)**
+
+### **🔧 Class-Based Setup Pattern:**
+- **Setup Class:** Browser initialization now uses consistent class pattern
+- **Improved Test Structure:** Cleaner, more maintainable test files
+- **Better Organization:** All handlers follow the same pattern
+
+### **📈 Benefits:**
+- ✅ **Consistent Style:** All handlers are classes (setup, login, products, etc.)
+- ✅ **Easy to Extend:** Add new methods to any class easily
+- ✅ **Reusable:** Use setup class in multiple tests
+- ✅ **Maintainable:** Clear separation of concerns
 
 ---
 

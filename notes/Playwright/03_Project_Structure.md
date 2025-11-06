@@ -1,5 +1,5 @@
 # 🗂️ PROJECT STRUCTURE & FILE ORGANIZATION
-Based on PROJECT_02 architecture
+Based on PROJECT_02 architecture with improved setup patterns
 
 ## 📁 **COMPLETE PROJECT STRUCTURE**
 ```
@@ -10,6 +10,7 @@ project_name/
 │   └── [JSON files]               # Allure test data
 ├── keywords/                       # Reusable automation classes
 │   ├── __init__.py                # Package imports
+│   ├── setup.py                   # Browser setup class ⭐ NEW
 │   ├── log_in.py                  # Login functionality
 │   ├── hamburger_menu.py          # Navigation menu actions
 │   └── products.py                # Product page interactions
@@ -37,14 +38,16 @@ testpaths = test_cases
 ### **📁 keywords/ Directory**
 *Contains reusable automation classes organized by functionality*
 
-#### **`keywords/__init__.py`**
+#### **`keywords/__init__.py` (UPDATED)**
 ```python
 from .log_in import log_in_class
 from .hamburger_menu import hamgurger_menu_class
 from .products import products_class
+from .setup import setup_class  # ⭐ NEW - Browser setup class
 ```
 
 #### **File Naming Convention:**
+- `setup.py` - Browser initialization & configuration ⭐ **NEW**
 - `log_in.py` - Authentication & login flows
 - `hamburger_menu.py` - Navigation menu interactions
 - `products.py` - Product-related actions

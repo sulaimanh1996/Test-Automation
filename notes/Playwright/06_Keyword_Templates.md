@@ -1,8 +1,63 @@
 # 🔑 KEYWORD CLASS TEMPLATES
-Copy-paste templates based on PROJECT_02 structure
+Copy-paste templates based on PROJECT_02 structure with improved patterns
 
 ## 📋 **TEMPLATE OVERVIEW**
 Ready-to-use class templates for common automation scenarios.
+
+---
+
+## ⭐ **SETUP CLASS TEMPLATE (NEW PATTERN)**
+
+### **File: `keywords/setup.py`**
+```python
+# ════════════════════════ SETTINGS ════════════════════════
+from keywords import log_in_class
+from keywords import hamgurger_menu_class
+from keywords import products_class
+from playwright.sync_api import sync_playwright
+
+# ════════════════════════ VARIABLES ════════════════════════
+PAGE_URL = "https://www.saucedemo.com"  # Replace with your app URL
+BROWSER_WIDTH = 1920
+BROWSER_HEIGHT = 1080
+
+# ════════════════════════ KEYWORDS ════════════════════════
+class setup_class():
+    def __init__(self, playwright_instance):
+        self.p = playwright_instance
+
+    def setup_browser(self):
+        """Setup browser and return page object"""
+        browser = self.p.chromium.launch(headless=False, slow_mo=100)
+        context = browser.new_context(viewport={'width': BROWSER_WIDTH, 'height': BROWSER_HEIGHT})
+        page = context.new_page()
+        page.goto(PAGE_URL)
+        return browser, page
+    
+    def setup_browser_headless(self):
+        """Setup headless browser for CI/CD"""
+        browser = self.p.chromium.launch(headless=True)
+        context = browser.new_context(viewport={'width': BROWSER_WIDTH, 'height': BROWSER_HEIGHT})
+        page = context.new_page()
+        page.goto(PAGE_URL)
+        return browser, page
+    
+    def setup_mobile_browser(self):
+        """Setup mobile viewport for responsive testing"""
+        browser = self.p.chromium.launch(headless=False, slow_mo=100)
+        context = browser.new_context(viewport={'width': 375, 'height': 667})  # Mobile size
+        page = context.new_page()
+        page.goto(PAGE_URL)
+        return browser, page
+```
+
+### **Update `keywords/__init__.py`:**
+```python
+from .log_in import log_in_class
+from .hamburger_menu import hamgurger_menu_class
+from .products import products_class
+from .setup import setup_class  # Add this line
+```
 
 ---
 
