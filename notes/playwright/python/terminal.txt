@@ -1,1 +1,0 @@
-python sync.py = runs script (sync.py is the script name)

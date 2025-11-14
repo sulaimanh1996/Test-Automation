@@ -1,1 +1,0 @@
-page.screenshot(path="screenshots/demo.png") = makes screenshot and sets path

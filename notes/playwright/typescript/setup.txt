@@ -1,3 +1,0 @@
-nodejs
-git
-playwright addition vscode

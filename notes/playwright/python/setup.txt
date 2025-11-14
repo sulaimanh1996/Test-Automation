@@ -1,9 +1,0 @@
-*** Software needed ***
-python – internet connection required (makes pip available)
-python.exe -m pip install --upgrade pip = upgrades pip and verifies installation
-pip install playwright = installs the Playwright library
-playwright install = installs browser drivers and testing capabilities
-
-*** Virtual environment ***
-python -m venv virtual_environment = creates a virtual environment named virtual_environment
-.\virtual_environment\Scripts\Activate.ps1 = activates the virtual environment
