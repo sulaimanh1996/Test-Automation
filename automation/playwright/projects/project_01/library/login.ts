@@ -9,7 +9,6 @@ export class LoginPage {
     async LogInSadFlowNoInput(username: string, password: string) {
         await this.page.click('#login-button');
         await expect(this.page.locator('text=Epic sadface: Username is required')).toBeVisible();
-
     }
 
     async LogInSadFlowWrongInput(username: string, password: string) {
