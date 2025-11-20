@@ -1,41 +1,52 @@
+//? Imports and Exports
 import {Page, expect} from '@playwright/test';
-export class LoginPage {
+export class loginPage {
     constructor(private page: Page) {}
 
-    async NavigateToSite() {
+//? Selectors
+    private usernameInput = '#user-name';
+    private passwordInput = '[name="password"]';
+    private loginButton = '#login-button';
+    private errorMessageNoInputOrUsername = 'Epic sadface: Username is required';
+    private errorMessageWrongInput = 'Epic sadface: Username and password do not match any user in this service';
+    private errorMessageNoPassword = 'Epic sadface: Password is required';
+    private productsTitle = 'Products';
+
+//? Methods
+    async navigateToSite() {
         await this.page.goto('https://www.saucedemo.com/');
     }
 
-    async NoInput(username: string, password: string) {
-        await this.page.click('#login-button');
-        await expect(this.page.locator('text=Epic sadface: Username is required')).toBeVisible();
+    async noInput(username: string, password: string) {
+        await this.page.click(this.loginButton);
+        await expect(this.page.locator(this.errorMessageNoInputOrUsername)).toBeVisible();
     }
 
-    async WrongInput(username: string, password: string) {
-        await this.page.fill('#user-name', username);
-        await this.page.fill('[name="password"]', password)
-        await this.page.click('#login-button');
-        await expect(this.page.locator('text=Epic sadface: Username and password do not match any user in this service')).toBeVisible();
+    async wrongInput(username: string, password: string) {
+        await this.page.fill(this.usernameInput, username);
+        await this.page.fill(this.passwordInput, password)
+        await this.page.click(this.loginButton);
+        await expect(this.page.locator(this.errorMessageWrongInput)).toBeVisible();
     }
 
-    async NoUsername(password: string) {
-        await this.page.fill('#user-name', '');
-        await this.page.fill('[name="password"]', password)
-        await this.page.click('#login-button');
-        await expect(this.page.locator('text=Epic sadface: Username is required')).toBeVisible();
+    async noUsername(password: string) {
+        await this.page.fill(this.usernameInput, '');
+        await this.page.fill(this.passwordInput, password)
+        await this.page.click(this.loginButton);
+        await expect(this.page.locator(this.errorMessageNoInputOrUsername)).toBeVisible();
     }
     
-    async NoPassword(username: string) {
-        await this.page.fill('#user-name', username);
-        await this.page.fill('[name="password"]', '')
-        await this.page.click('#login-button');
-        await expect(this.page.locator('text=Epic sadface: Password is required')).toBeVisible();
+    async noPassword(username: string) {
+        await this.page.fill(this.usernameInput, username);
+        await this.page.fill(this.passwordInput, '')
+        await this.page.click(this.loginButton);
+        await expect(this.page.locator(this.errorMessageNoPassword)).toBeVisible();
     }
 
-    async Login(username: string, password: string) {
-        await this.page.fill('#user-name', username);
-        await this.page.fill('[name="password"]', password)
-        await this.page.click('#login-button');
-        await expect(this.page.locator('text=Products')).toBeVisible()
+    async login(username: string, password: string) {
+        await this.page.fill(this.usernameInput, username);
+        await this.page.fill(this.passwordInput, password)
+        await this.page.click(this.loginButton);
+        await expect(this.page.locator(this.productsTitle)).toBeVisible()
     }
 }

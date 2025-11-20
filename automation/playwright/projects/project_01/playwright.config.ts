@@ -10,7 +10,7 @@ export default defineConfig({
   use: {
     trace: 'on-first-retry',
     launchOptions: {
-      slowMo: 500,
+      //slowMo: 100,
     },
   },
 
