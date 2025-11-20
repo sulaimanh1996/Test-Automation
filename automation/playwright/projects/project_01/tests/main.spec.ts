@@ -1,35 +1,37 @@
-import { ProductsPage } from "../library/products";
-import { LoginPage } from "../library/login";
-import { HamburgerMenu } from "../library/hamburger";
+import { products_page } from "../library/products";
+import { login_page } from "../library/login";
+import { hamburger_menu } from "../library/hamburger";
 import { test } from '@playwright/test'
 
-test('Log in paths', async ({page})=>{
-    const loginPage = new LoginPage(page);
-    await loginPage.NavigateToPage();
-    await loginPage.LogInSadFlowNoInput('','');
-    await loginPage.LogInSadFlowWrongInput('test','test');
-    await loginPage.LogInSadFlowNoPassword('test');
-    await loginPage.LogInSadFlowNoUsername('test');
-    await loginPage.LogInHappyFlow('standard_user','secret_sauce');
+test('as the user i would try to log in', async ({page})=>{
+    const login = new login_page(page);
+    await login.as_the_user_i_would_first_navigate_to_the_site();
+    await login.as_the_user_i_would_forget_any_input('','');
+    await login.as_the_user_i_would_input_the_wrong_data('test','test');
+    await login.as_the_user_i_would_forget_my_password('test');
+    await login.as_the_user_i_would_forget_my_username('test');
+    await login.as_the_user_i_would_log_in_succesfully('standard_user','secret_sauce');
 })
 
-test('Products', async ({page})=>{
-    const productsPage = new ProductsPage(page);
-    await productsPage.NavigateToPageAndLogin();
-    await productsPage.ViewAddRemoveBackpack();
-    await productsPage.ViewAddRemoveBikeLight();
-    await productsPage.ViewAddRemoveBoltTShirt();
-    await productsPage.ViewAddRemoveFleeceJacket();
-    await productsPage.ViewAddRemoveOnesie();
-    await productsPage.ViewAddRemoveTestAllTheThingsTShirt();
+test('as the user i would navigate the products page', async ({page})=>{
+    const products = new products_page(page);
+    await products.as_the_user_i_would_navigate_to_page_and_log_in();
+    await products.as_the_user_i_would_view_add_remove_the_product_backpack();
+    await products.as_the_user_i_would_view_add_remove_the_product_TestAllTheThingsTShirt();
+    await products.as_the_user_i_would_view_add_remove_the_product_bikeLight();
+    await products.as_the_user_i_would_view_add_remove_the_product_boltTShirt();
+    await products.as_the_user_i_would_view_add_remove_the_product_fleeceJacket();
+    await products.as_the_user_i_would_view_add_remove_the_product_onesie();
 })
 
-test.only('Hamburger Menu', async ({page})=>{
-    const hamburgerMenu = new HamburgerMenu(page);
-    const productsPage = new ProductsPage(page);
-    await productsPage.NavigateToPageAndLogin();
-    await hamburgerMenu.About();
-    await hamburgerMenu.Logout();
-    await hamburgerMenu.AllItems();
+test('as the user i would use the hamburger menu', async ({page})=>{
+    const hamburger = new hamburger_menu(page);
+    const products = new products_page(page);
+    await products.as_the_user_i_would_navigate_to_page_and_log_in();
+    await hamburger.as_the_user_i_would_press_the_about_button();
+    await hamburger.as_the_user_i_would_press_the_logout_button();
+    await hamburger.as_the_user_i_would_press_the_allitems_button();
 })
+
+
 

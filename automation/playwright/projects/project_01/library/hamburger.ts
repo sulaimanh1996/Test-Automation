@@ -1,22 +1,22 @@
 import {Page} from '@playwright/test'
-import { LoginPage } from "../library/login";
-export class HamburgerMenu {
+import { login_page } from "../library/login";
+export class hamburger_menu {
     constructor(private page:Page) {}
 
-    async About() {
+    async as_the_user_i_would_press_the_about_button() {
         await this.page.click('#react-burger-menu-btn');
         await this.page.click('#about_sidebar_link');
         await this.page.goBack();    
     }
 
-    async Logout() {
-        const loginPage = new LoginPage(this.page);
+    async as_the_user_i_would_press_the_logout_button() {
+        const loginPage = new login_page(this.page);
         await this.page.click('#react-burger-menu-btn');
         await this.page.click('#logout_sidebar_link');
-        await loginPage.LogInHappyFlow('standard_user','secret_sauce');
+        await loginPage.as_the_user_i_would_log_in_succesfully('standard_user','secret_sauce');
     }
 
-    async AllItems() {
+    async as_the_user_i_would_press_the_allitems_button() {
         await this.page.click('text=Sauce Labs Backpack');
         await this.page.click('#react-burger-menu-btn');
         await this.page.click('#inventory_sidebar_link');
